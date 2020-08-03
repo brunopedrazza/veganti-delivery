@@ -4,6 +4,7 @@ from datetime import timedelta
 import glob
 import os
 from order import Order
+from sys import platform
 
 
 def string_to_currency(value):
@@ -12,7 +13,11 @@ def string_to_currency(value):
     return float(value.replace('.', '').replace(',', '.'))
 
 
-list_of_files = glob.glob('C:/Users/pedra/Downloads/*.csv')
+if platform == 'win32':
+    list_of_files = glob.glob('C:/Users/pedra/Downloads/*.csv')
+else:
+    list_of_files = glob.glob('/Users/Bruno/Downloads/*.csv')
+
 latest_file = max(list_of_files, key=os.path.getctime)
 
 date = datetime.now()
@@ -104,4 +109,5 @@ results.write('\n{}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\n'
               .replace('.', ','))
 
 results.close()
-os.startfile(f'C:/Users/pedra/Code/veganti/results/stone-{now}.txt')
+if platform == 'win32':
+    os.startfile(f'C:/Users/pedra/Code/veganti-delivery/results/stone-{now}.txt')

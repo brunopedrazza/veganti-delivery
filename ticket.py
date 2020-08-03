@@ -1,4 +1,4 @@
-import csv
+import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 import glob
@@ -8,16 +8,15 @@ from sys import platform
 
 
 def string_to_currency(currency_string):
-    return float(currency_string.replace('.', '').replace(',', '.'))
+    return float(currency_string.replace('.', '').replace(',', '.').replace('R$ ', ''))
 
 
 if platform == 'win32':
-    list_of_files = glob.glob('C:/Users/pedra/Downloads/*')
+    list_of_files = glob.glob('C:/Users/pedra/Downloads/*.xlsx')
 else:
-    list_of_files = glob.glob('/Users/Bruno/Downloads/*')
+    list_of_files = glob.glob('/Users/Bruno/Downloads/*.xlsx')
 
 latest_file = max(list_of_files, key=os.path.getctime)
-
 date_value = {}
 
 with open(latest_file) as orders_file:
@@ -62,4 +61,4 @@ for (date, t_values) in date_value.items():
 
 results.close()
 if platform == 'win32':
-    os.startfile(f'C:/Users/pedra/Code/veganti-delivery/results/stripe-{now}.txt')
+    os.startfile(f'C:/Users/pedra/Code/veganti-results/results/stripe-{now}.txt')

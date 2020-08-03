@@ -1,6 +1,7 @@
 import csv
 import glob
 import os
+from sys import platform
 
 
 def string_to_currency(value):
@@ -8,7 +9,12 @@ def string_to_currency(value):
         return 0.0
     return float(value.replace('.', '').replace(',', '.'))
 
-list_of_files = glob.glob('C:/Users/pedra/Downloads/*')
+
+if platform == 'win32':
+    list_of_files = glob.glob('C:/Users/pedra/Downloads/*')
+else:
+    list_of_files = glob.glob('/Users/Bruno/Downloads/*')
+
 latest_file = max(list_of_files, key=os.path.getctime)
 
 
