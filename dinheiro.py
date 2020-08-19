@@ -1,22 +1,19 @@
 import csv
 import glob
 import os
-from sys import platform
+from configsettings import Configs
 
+config = Configs()
 
 def string_to_currency(value):
     if value == '':
         return 0.0
     return float(value.replace('.', '').replace(',', '.'))
 
-
-if platform == 'win32':
-    list_of_files = glob.glob('C:/Users/pedra/Downloads/*')
-else:
-    list_of_files = glob.glob('/Users/Bruno/Downloads/*')
+downloads_path = configs.downloads_path
+list_of_files = glob.glob(f'{downloads_path}*')
 
 latest_file = max(list_of_files, key=os.path.getctime)
-
 
 with open(latest_file, newline='', errors='replace') as money_file:
     csv_reader = csv.reader(money_file, delimiter=';')

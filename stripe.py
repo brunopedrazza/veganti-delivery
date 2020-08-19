@@ -5,16 +5,15 @@ import glob
 import os
 from order import Order
 from sys import platform
+from configsettings import Configs
 
+configs = Configs()
 
 def string_to_currency(currency_string):
     return float(currency_string.replace('.', '').replace(',', '.'))
 
-
-if platform == 'win32':
-    list_of_files = glob.glob('C:/Users/pedra/Downloads/*')
-else:
-    list_of_files = glob.glob('/Users/Bruno/Downloads/*')
+downloads_path = configs.downloads_path
+list_of_files = glob.glob(f'{downloads_path}*')
 
 latest_file = max(list_of_files, key=os.path.getctime)
 
@@ -61,5 +60,6 @@ for (date, t_values) in date_value.items():
                   .replace('.', ','))
 
 results.close()
-if platform == 'win32':
-    os.startfile(f'C:/Users/pedra/Code/veganti-delivery/results/stripe-{now}.txt')
+if configs.platform == 'windows':
+    results_path = configs.results_path
+    os.startfile(f'{results_path}stripe-{now}.txt')

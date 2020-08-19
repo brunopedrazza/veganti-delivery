@@ -3,7 +3,9 @@ import glob
 from datetime import datetime
 import os
 from sys import platform
+from configsettings import Configs
 
+configs = Configs()
 
 def string_to_currency(value):
     if value == '':
@@ -11,10 +13,8 @@ def string_to_currency(value):
     return float(value.replace('.', '').replace(',', '.'))
 
 
-if platform == 'win32':
-    list_of_files = glob.glob('C:/Users/pedra/Downloads/*')
-else:
-    list_of_files = glob.glob('/Users/Bruno/Downloads/*')
+downloads_path = configs.downloads_path
+list_of_files = glob.glob(f'{downloads_path}*')
 
 latest_file = max(list_of_files, key=os.path.getctime)
 
@@ -44,5 +44,6 @@ for (date, total) in order_day.items():
     results.write('{}\t{:.2f}\n'.format(date, total).replace('.', ','))
 
 results.close()
-if platform == 'win32':
-    os.startfile(f'C:/Users/pedra/Code/veganti-delivery/results/todos-{now}.txt')
+if configs.platform == 'windows':
+    results_path = configs.results_path
+    os.startfile(f'{results_path}todos-{now}.txt')

@@ -4,8 +4,9 @@ from datetime import timedelta
 import glob
 import os
 from order import Order
-from sys import platform
+from configsettings import Configs
 
+configs = Configs()
 
 def string_to_currency(value):
     if value == '':
@@ -13,10 +14,8 @@ def string_to_currency(value):
     return float(value.replace('.', '').replace(',', '.'))
 
 
-if platform == 'win32':
-    list_of_files = glob.glob('C:/Users/pedra/Downloads/*.csv')
-else:
-    list_of_files = glob.glob('/Users/Bruno/Downloads/*.csv')
+downloads_path = configs.downloads_path
+list_of_files = glob.glob(f'{downloads_path}*.csv')
 
 latest_file = max(list_of_files, key=os.path.getctime)
 
@@ -52,6 +51,7 @@ with open(latest_file, newline='', errors='replace') as stone_file:
                 stone_ant_orders.append(stone_order)
             else:
                 taxa = 0
+                desconto_ant = 0
                 if valor_bruto > 0:
                     desconto_ant = string_to_currency(row[14])
                     taxa = string_to_currency(row[15])
@@ -109,5 +109,6 @@ results.write('\n{}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\n'
               .replace('.', ','))
 
 results.close()
-if platform == 'win32':
-    os.startfile(f'C:/Users/pedra/Code/veganti-delivery/results/stone-{now}.txt')
+if configs.platform == 'windows':
+    results_path = configs.results_path
+    os.startfile(f'{results_path}stone-{now}.txt')
