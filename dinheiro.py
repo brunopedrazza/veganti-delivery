@@ -3,7 +3,7 @@ import glob
 import os
 from configsettings import Configs
 
-config = Configs()
+configs = Configs()
 
 def string_to_currency(value):
     if value == '':
