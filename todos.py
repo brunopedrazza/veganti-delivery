@@ -14,7 +14,7 @@ def string_to_currency(value):
 
 
 downloads_path = configs.downloads_path
-list_of_files = glob.glob(f'{downloads_path}*')
+list_of_files = glob.glob(f'{downloads_path}*.csv')
 
 latest_file = max(list_of_files, key=os.path.getctime)
 

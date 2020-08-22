@@ -13,7 +13,7 @@ def string_to_currency(currency_string):
     return float(currency_string.replace('.', '').replace(',', '.'))
 
 downloads_path = configs.downloads_path
-list_of_files = glob.glob(f'{downloads_path}*')
+list_of_files = glob.glob(f'{downloads_path}*.csv')
 
 latest_file = max(list_of_files, key=os.path.getctime)
 
