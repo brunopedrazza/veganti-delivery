@@ -3,10 +3,29 @@ from datetime import datetime
 from datetime import timedelta
 import glob
 import os
+import requests
+import json
 from order import Order
+from holiday import Holiday
 from configsettings import Configs
 
 configs = Configs()
+date = datetime.now()
+
+ibge_rj = '3304557'
+year = date.year
+token = configs.holidays_token
+uri = f'https://api.calendario.com.br/?json=true&ano={year}&ibge={ibge_rj}&token={token}'
+
+response = requests.get(uri)
+
+national_holidays = []
+holiday_dates = []
+if response.status_code == 200:
+    for holiday in json.loads(response.content):
+        if holiday['type_code'] == str(1):
+            national_holidays.append(Holiday(holiday['date'], holiday['name'], holiday['type'], holiday['type_code']))
+            holiday_dates.append(datetime.strptime(holiday['date'], '%d/%m/%Y').strftime('%Y-%m-%d'))
 
 def string_to_currency(value):
     if value == '':
@@ -19,7 +38,6 @@ list_of_files = glob.glob(f'{downloads_path}*.csv')
 
 latest_file = max(list_of_files, key=os.path.getctime)
 
-date = datetime.now()
 is_ant_day = True
 
 while is_ant_day:
@@ -29,7 +47,7 @@ while is_ant_day:
     if is_ant_day:
         date += timedelta(days=1)
 
-while date.weekday() == 5 or date.weekday() == 6:
+while date.weekday() == 5 or date.weekday() == 6 or date.strftime('%Y-%m-%d') in holiday_dates:
     date += timedelta(days=1)
 
 with open(latest_file, newline='', errors='replace') as stone_file:
