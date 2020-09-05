@@ -13,3 +13,4 @@ class Configs:
             platform = 'macos'
         self.downloads_path = downloads_path
         self.platform = platform
+        self.holidays_token = 'cGVkcmF6emFicnVub0BnbWFpbC5jb20maGFzaD04MjUwODkyNA'
