@@ -63,7 +63,7 @@ with open(latest_file, newline='', errors='replace') as stone_file:
             disponivel = datetime.strptime(row[5], '%d/%m/%Y %H:%M:%S')
             valor_bruto = string_to_currency(row[12])
             valor_liquido = string_to_currency(row[13])
-            if disponivel > date and not is_ant_day:
+            if disponivel.date() >= date.date():
                 taxa = string_to_currency(row[15])
                 stone_order = Order(disponivel, valor_bruto, taxa, valor_liquido)
                 stone_ant_orders.append(stone_order)
