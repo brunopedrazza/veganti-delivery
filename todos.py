@@ -28,10 +28,10 @@ with open(latest_file, newline='', errors='replace') as money_file:
             header = False
             pass
         else:
-            date = datetime.strptime(row[0], '%d/%m/%Y %H:%M')
+            date = datetime.strptime(row[1], '%d/%m/%Y %H:%M')
             date = date.strftime('%d/%m/%Y')
             total = order_day.get(date, 0)
-            total += string_to_currency(row[9])
+            total += string_to_currency(row[10])
             order_day[date] = total
 
 

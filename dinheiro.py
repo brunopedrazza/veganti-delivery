@@ -23,5 +23,5 @@ with open(latest_file, newline='', errors='replace') as money_file:
             header = False
             pass
         else:
-            if row[12] == 'Dinheiro':
-                print(f'{row[0]}\t\t{row[1]}\t\t{row[9]}')
+            if row[13] == 'Dinheiro':
+                print(f'{row[1]}\t\t{row[2]}\t\t{row[10]}')
