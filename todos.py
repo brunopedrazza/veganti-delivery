@@ -7,6 +7,7 @@ from configsettings import Configs
 
 configs = Configs()
 
+
 def string_to_currency(value):
     if value == '':
         return 0.0

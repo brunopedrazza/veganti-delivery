@@ -1,4 +1,5 @@
 import sys
+import os
 
 
 class Configs:
@@ -6,7 +7,7 @@ class Configs:
         downloads_path = ''
         platform = ''
         self.results_path = '/results'
-        self.downloads_path = '/sheets/'
+        self.downloads_path = f'{os.getcwd()}/sheets/'
         if sys.platform == 'win32':
             platform = 'windows'
         else:
