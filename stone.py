@@ -24,8 +24,11 @@ holiday_dates = []
 if response.status_code == 200:
     for holiday in json.loads(response.content):
         if holiday['type_code'] == str(1):
-            national_holidays.append(Holiday(holiday['date'], holiday['name'], holiday['type'], holiday['type_code']))
-            holiday_dates.append(datetime.strptime(holiday['date'], '%d/%m/%Y').strftime('%Y-%m-%d'))
+            national_holidays.append(Holiday(
+                holiday['date'], holiday['name'], holiday['type'], holiday['type_code']))
+            holiday_dates.append(datetime.strptime(
+                holiday['date'], '%d/%m/%Y').strftime('%Y-%m-%d'))
+
 
 def string_to_currency(value):
     if value == '':
@@ -62,10 +65,13 @@ with open(latest_file, newline='', errors='replace') as stone_file:
         else:
             disponivel = datetime.strptime(row[5], '%d/%m/%Y %H:%M:%S')
             valor_bruto = string_to_currency(row[12])
+            if row[3] == 'Quitação de Empréstimo':
+                valor_bruto *= -1
             valor_liquido = string_to_currency(row[13])
             if disponivel.date() >= date.date():
                 taxa = string_to_currency(row[15])
-                stone_order = Order(disponivel, valor_bruto, taxa, valor_liquido)
+                stone_order = Order(disponivel, valor_bruto,
+                                    taxa, valor_liquido)
                 stone_ant_orders.append(stone_order)
             else:
                 taxa = 0
@@ -73,7 +79,8 @@ with open(latest_file, newline='', errors='replace') as stone_file:
                 if valor_bruto > 0:
                     desconto_ant = string_to_currency(row[14])
                     taxa = string_to_currency(row[15])
-                stone_order = Order(disponivel, valor_bruto, taxa, valor_liquido, desconto_ant)
+                stone_order = Order(disponivel, valor_bruto,
+                                    taxa, valor_liquido, desconto_ant)
                 stone_orders.append(stone_order)
 
 
@@ -104,7 +111,8 @@ dict_orders = {}
 stone_orders.sort(key=lambda x: x.disponivel)
 
 for stone_order in stone_orders:
-    bruto, taxa, liquido, emprestimo, antecipacao = dict_orders.get(stone_order.disponivel, (0, 0, 0, 0, 0))
+    bruto, taxa, liquido, emprestimo, antecipacao = dict_orders.get(
+        stone_order.disponivel, (0, 0, 0, 0, 0))
     if stone_order.valor_bruto < 0:
         emprestimo += stone_order.valor_bruto
     else:
@@ -112,12 +120,14 @@ for stone_order in stone_orders:
         taxa += stone_order.taxa
         liquido += stone_order.valor_liquido
         antecipacao += stone_order.desconto_ant
-    dict_orders[stone_order.disponivel] = (bruto, taxa, liquido, emprestimo, antecipacao)
+    dict_orders[stone_order.disponivel] = (
+        bruto, taxa, liquido, emprestimo, antecipacao)
 
 
 for (disponivel, t_values) in dict_orders.items():
     if t_values[3] == 0:
-        t_values = (t_values[0], t_values[1], t_values[2], -1*taxa_emprestimo*t_values[2], t_values[4])
+        t_values = (t_values[0], t_values[1], t_values[2], -
+                    1*taxa_emprestimo*t_values[2], t_values[4])
     results.write('{}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\t\t{:.2f}\n'
                   .format(disponivel.strftime('%d/%m/%y'), t_values[0], t_values[1], t_values[4], -1*t_values[3], t_values[2] + t_values[3])
                   .replace('.', ','))
