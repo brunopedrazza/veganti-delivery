@@ -1,0 +1,1 @@
+.\..\source\dinheiro\dinheiro.exe
