@@ -27,7 +27,7 @@ with open(configs.latest_file) as orders_file:
             taxa = string_to_currency(row[2])
             valor_liquido = string_to_currency(row[3])
             tipo = row[4]
-            if 'Transferência bancária' not in tipo and disponivel >= datetime(2020, 4, 6):
+            if 'Transfer' not in tipo and disponivel >= datetime(2020, 4, 6):
                 order = Order(disponivel, valor_bruto, taxa, valor_liquido)
                 orders.append(order)
 
