@@ -16,15 +16,19 @@ order_day = {}
 with open(configs.latest_file, newline='', errors='replace') as money_file:
     csv_reader = csv.reader(money_file, delimiter=';')
     header = True
+    date_index = 0
+    total_index = 0
     for row in csv_reader:
         if header:
+            date_index = row.index("Data")
+            total_index = row.index("Total")
             header = False
             pass
         else:
-            date = datetime.strptime(row[1], '%d/%m/%Y %H:%M')
+            date = datetime.strptime(row[date_index], '%d/%m/%Y %H:%M')
             date = date.strftime('%d/%m/%Y')
             total = order_day.get(date, 0)
-            total += string_to_currency(row[10])
+            total += string_to_currency(row[total_index])
             order_day[date] = total
 
 
