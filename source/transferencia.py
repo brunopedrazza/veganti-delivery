@@ -18,13 +18,14 @@ with open(configs.latest_file, newline='', errors='replace') as transf_file:
     total_index = 0
     for row in csv_reader:
         if header:
-            date_index = row.index("Data")
+            date_index = row.index("Criado em")
             name_index = row.index("Nome")
             total_index = row.index("Total")
+            payment_index = row.index("Forma de pagamento")
             header = False
             pass
         else:
-            if 'Transf' in row[14] or 'PicPay' in row[14]:
+            if 'Transf' in row[payment_index] or 'PicPay' in row[payment_index] or 'PIX' in row[payment_index]:
                 results.write(f'{row[date_index][:10]}\t{unidecode(row[name_index][:20]).upper().ljust(20)}\t{row[total_index]}\n')
 
 

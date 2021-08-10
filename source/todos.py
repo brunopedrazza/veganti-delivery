@@ -20,7 +20,7 @@ with open(configs.latest_file, newline='', errors='replace') as money_file:
     total_index = 0
     for row in csv_reader:
         if header:
-            date_index = row.index("Data")
+            date_index = row.index("Criado em")
             total_index = row.index("Total")
             header = False
             pass
